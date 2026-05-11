@@ -59,6 +59,24 @@
             margin: 10px;
             text-align: center;
         }
+        .mensajes {
+            margin-bottom: 20px;
+        }
+        .mensaje {
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        .mensaje.success {
+            background: #e6ffed;
+            color: #22543d;
+            border: 1px solid #c6f6d5;
+        }
+        .mensaje.error {
+            background: #ffe6e6;
+            color: #9b2c2c;
+            border: 1px solid #feb2b2;
+        }
     </style>
 </head>
 <body>
@@ -74,7 +92,7 @@
         <a href="/platos/">Platos</a>
         <a href="/ordenes/">Órdenes</a>
         <a href="/facturas/">Facturas</a>
-        <a href="/admin/">Admin</a>
+        <a href="/login/">Login</a>
         {% if user.is_authenticated %}
             | 👤 {{ user.first_name }} {{ user.last_name }} |
             <a href="/logout/">Cerrar Sesión</a>
@@ -82,6 +100,13 @@
     </nav>
 
     <div class="contenedor">
+        {% if messages %}
+            <div class="mensajes">
+                {% for message in messages %}
+                    <div class="mensaje {{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
         {% block content %}
         {% endblock %}
     </div>

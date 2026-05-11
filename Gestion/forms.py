@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from .models import Administrador
+from .models import Administrador, Cliente, Empleado, Mesa, Plato, Orden, Factura
 
 class RegistroAdminForm(UserCreationForm):
     email = forms.EmailField(
@@ -83,6 +83,79 @@ class RegistroAdminForm(UserCreationForm):
             telefono = self.cleaned_data.get('telefono', '')
             Administrador.objects.create(usuario=user, telefono=telefono)
         return user
+
+
+class ClienteForm(forms.ModelForm):
+    class Meta:
+        model = Cliente
+        fields = ['nombre', 'telefono', 'correo']
+        widgets = {
+            'nombre': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre'}),
+            'telefono': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Teléfono'}),
+            'correo': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Correo electrónico'}),
+        }
+
+
+class EmpleadoForm(forms.ModelForm):
+    class Meta:
+        model = Empleado
+        fields = ['nombre', 'cargo', 'telefono', 'correo']
+        widgets = {
+            'nombre': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre'}),
+            'cargo': forms.Select(attrs={'class': 'form-control'}),
+            'telefono': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Teléfono'}),
+            'correo': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Correo electrónico'}),
+        }
+
+
+class MesaForm(forms.ModelForm):
+    class Meta:
+        model = Mesa
+        fields = ['numero_mesa', 'capacidad', 'estado_mesa']
+        widgets = {
+            'numero_mesa': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Número de mesa'}),
+            'capacidad': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Capacidad'}),
+            'estado_mesa': forms.Select(attrs={'class': 'form-control'}),
+        }
+
+
+class PlatoForm(forms.ModelForm):
+    class Meta:
+        model = Plato
+        fields = ['nombre_plato', 'descripcion', 'precio', 'categoria', 'disponible']
+        widgets = {
+            'nombre_plato': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre del plato'}),
+            'descripcion': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Descripción', 'rows': 3}),
+            'precio': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01', 'placeholder': 'Precio'}),
+            'categoria': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Categoría'}),
+            'disponible': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+        }
+
+
+class OrdenForm(forms.ModelForm):
+    class Meta:
+        model = Orden
+        fields = ['cliente', 'empleado', 'mesa', 'estado_orden', 'total']
+        widgets = {
+            'cliente': forms.Select(attrs={'class': 'form-control'}),
+            'empleado': forms.Select(attrs={'class': 'form-control'}),
+            'mesa': forms.Select(attrs={'class': 'form-control'}),
+            'estado_orden': forms.Select(attrs={'class': 'form-control'}),
+            'total': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01', 'placeholder': 'Total'}),
+        }
+
+
+class FacturaForm(forms.ModelForm):
+    class Meta:
+        model = Factura
+        fields = ['orden', 'subtotal', 'impuesto', 'total_factura', 'metodo_pago']
+        widgets = {
+            'orden': forms.Select(attrs={'class': 'form-control'}),
+            'subtotal': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01', 'placeholder': 'Subtotal'}),
+            'impuesto': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01', 'placeholder': 'Impuesto'}),
+            'total_factura': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01', 'placeholder': 'Total'}),
+            'metodo_pago': forms.Select(attrs={'class': 'form-control'}),
+        }
 
 
 class LoginForm(forms.Form):

@@ -2,12 +2,14 @@
 
 {% block content %}
 <h2>Clientes</h2>
+<p><a href="/clientes/crear/">Crear cliente</a></p>
 <table>
     <tr>
         <th>ID</th>
         <th>Nombre</th>
         <th>Teléfono</th>
         <th>Correo</th>
+        <th>Acciones</th>
     </tr>
     {% for cliente in clientes %}
     <tr>
@@ -15,6 +17,10 @@
         <td>{{ cliente.nombre }}</td>
         <td>{{ cliente.telefono }}</td>
         <td>{{ cliente.correo }}</td>
+        <td>
+            <a href="/clientes/{{ cliente.id }}/editar/">Editar</a> |
+            <a href="/clientes/{{ cliente.id }}/eliminar/">Eliminar</a>
+        </td>
     </tr>
     {% endfor %}
 </table>

@@ -2,6 +2,7 @@
 
 {% block content %}
 <h2>Platos</h2>
+<p><a href="/platos/crear/">Crear plato</a></p>
 <table>
     <tr>
         <th>ID</th>
@@ -10,6 +11,7 @@
         <th>Precio</th>
         <th>Categoría</th>
         <th>Disponible</th>
+        <th>Acciones</th>
     </tr>
     {% for plato in platos %}
     <tr>
@@ -19,6 +21,10 @@
         <td>{{ plato.precio }}</td>
         <td>{{ plato.categoria }}</td>
         <td>{{ plato.disponible }}</td>
+        <td>
+            <a href="/platos/{{ plato.id }}/editar/">Editar</a> |
+            <a href="/platos/{{ plato.id }}/eliminar/">Eliminar</a>
+        </td>
     </tr>
     {% endfor %}
 </table>

@@ -2,6 +2,7 @@
 
 {% block content %}
 <h2>Empleados</h2>
+<p><a href="/empleados/crear/">Crear empleado</a></p>
 <table>
     <tr>
         <th>ID</th>
@@ -9,6 +10,7 @@
         <th>Cargo</th>
         <th>Teléfono</th>
         <th>Correo</th>
+        <th>Acciones</th>
     </tr>
     {% for empleado in empleados %}
     <tr>
@@ -17,6 +19,10 @@
         <td>{{ empleado.cargo }}</td>
         <td>{{ empleado.telefono }}</td>
         <td>{{ empleado.correo }}</td>
+        <td>
+            <a href="/empleados/{{ empleado.id }}/editar/">Editar</a> |
+            <a href="/empleados/{{ empleado.id }}/eliminar/">Eliminar</a>
+        </td>
     </tr>
     {% endfor %}
 </table>

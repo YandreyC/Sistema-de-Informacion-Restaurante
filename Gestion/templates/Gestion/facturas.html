@@ -2,6 +2,7 @@
 
 {% block content %}
 <h2>Facturas</h2>
+<p><a href="/facturas/crear/">Crear factura</a></p>
 <table>
     <tr>
         <th>ID</th>
@@ -11,6 +12,7 @@
         <th>Impuesto</th>
         <th>Total</th>
         <th>Método de pago</th>
+        <th>Acciones</th>
     </tr>
     {% for factura in facturas %}
     <tr>
@@ -21,6 +23,10 @@
         <td>{{ factura.impuesto }}</td>
         <td>{{ factura.total_factura }}</td>
         <td>{{ factura.metodo_pago }}</td>
+        <td>
+            <a href="/facturas/{{ factura.id }}/editar/">Editar</a> |
+            <a href="/facturas/{{ factura.id }}/eliminar/">Eliminar</a>
+        </td>
     </tr>
     {% endfor %}
 </table>

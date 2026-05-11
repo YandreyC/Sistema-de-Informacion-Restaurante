@@ -2,6 +2,7 @@
 
 {% block content %}
 <h2>Órdenes</h2>
+<p><a href="/ordenes/crear/">Crear orden</a></p>
 <table>
     <tr>
         <th>ID</th>
@@ -11,6 +12,7 @@
         <th>Fecha</th>
         <th>Estado</th>
         <th>Total</th>
+        <th>Acciones</th>
     </tr>
     {% for orden in ordenes %}
     <tr>
@@ -21,6 +23,10 @@
         <td>{{ orden.fecha_hora }}</td>
         <td>{{ orden.estado_orden }}</td>
         <td>{{ orden.total }}</td>
+        <td>
+            <a href="/ordenes/{{ orden.id }}/editar/">Editar</a> |
+            <a href="/ordenes/{{ orden.id }}/eliminar/">Eliminar</a>
+        </td>
     </tr>
     {% endfor %}
 </table>
