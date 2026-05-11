@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Correo Enviado - Restaurante Pasta La Vista</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #8B0000 0%, #b22222 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .contenedor {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+        
+        .icono {
+            font-size: 50px;
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            color: #8B0000;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+        
+        p {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        
+        .advertencia {
+            background-color: #fff3cd;
+            border: 1px solid #ffc107;
+            color: #856404;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            font-size: 13px;
+        }
+        
+        .enlace {
+            margin-top: 30px;
+        }
+        
+        .enlace a {
+            color: #8B0000;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .enlace a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="contenedor">
+        <div class="icono">✉️</div>
+        <h1>Correo Enviado</h1>
+        <p>Se ha enviado un enlace de recuperación a tu correo electrónico.</p>
+        <p>Por favor, revisa tu correo (incluyendo la carpeta de spam) para encontrar el enlace de recuperación.</p>
+        
+        <div class="advertencia">
+            <strong>Nota:</strong> El enlace de recuperación es válido por 24 horas. Si no recibes el correo en los próximos minutos, intenta solicitar otro enlace.
+        </div>
+        
+        <div class="enlace">
+            <a href="{% url 'login_admin' %}">Volver al login</a>
+        </div>
+    </div>
+</body>
+</html>

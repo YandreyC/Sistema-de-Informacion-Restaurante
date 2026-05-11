@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contraseña Restablecida - Restaurante Pasta La Vista</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #8B0000 0%, #b22222 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .contenedor {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+        
+        .icono {
+            font-size: 50px;
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            color: #8B0000;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+        
+        p {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        
+        .exito {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            font-size: 13px;
+        }
+        
+        .enlace {
+            margin-top: 30px;
+        }
+        
+        .enlace a {
+            display: inline-block;
+            background-color: #8B0000;
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            font-size: 14px;
+        }
+        
+        .enlace a:hover {
+            background-color: #b22222;
+        }
+    </style>
+</head>
+<body>
+    <div class="contenedor">
+        <div class="icono">✅</div>
+        <h1>¡Contraseña Restablecida!</h1>
+        <p>Tu contraseña ha sido cambiada exitosamente.</p>
+        
+        <div class="exito">
+            <strong>Éxito:</strong> Ya puedes iniciar sesión con tu nueva contraseña.
+        </div>
+        
+        <div class="enlace">
+            <a href="{% url 'login_admin' %}">Ir al Login</a>
+        </div>
+    </div>
+</body>
+</html>

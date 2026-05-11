@@ -75,6 +75,10 @@
         <a href="/ordenes/">Órdenes</a>
         <a href="/facturas/">Facturas</a>
         <a href="/admin/">Admin</a>
+        {% if user.is_authenticated %}
+            | 👤 {{ user.first_name }} {{ user.last_name }} |
+            <a href="/logout/">Cerrar Sesión</a>
+        {% endif %}
     </nav>
 
     <div class="contenedor">

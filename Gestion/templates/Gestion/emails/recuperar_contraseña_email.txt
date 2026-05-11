@@ -1,0 +1,13 @@
+Hola {{ user.first_name }},
+
+Has solicitado restablecer tu contraseña para acceder al Sistema de Gestión de Restaurante Pasta La Vista.
+
+Por favor, haz clic en el siguiente enlace para restablecer tu contraseña:
+{{ protocol }}://{{ domain }}{% url 'password_reset_confirm' uidb64=uid token=token %}
+
+Este enlace es válido por 24 horas.
+
+Si no solicitaste este cambio, por favor ignora este correo.
+
+Saludos,
+Sistema de Gestión - Pasta La Vista
