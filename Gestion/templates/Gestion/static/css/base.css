@@ -1,0 +1,265 @@
+/* Importar Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+    --bg: #0d1220;
+    --surface: rgba(15, 23, 42, 0.75);
+    --surface-alt: rgba(30, 41, 59, 0.8);
+    --surface-soft: rgba(51, 65, 85, 0.6);
+
+    --border: rgba(148, 163, 184, 0.16);
+
+    --primary: #8b5cf6;
+    --primary-dark: #7c3aed;
+    --primary-light: #c4b5fd;
+
+    --secondary: #f8fafc;
+
+    --text: #f8fafc;
+    --text-muted: #cbd5e1;
+    --muted-strong: #94a3b8;
+
+    --success: #22c55e;
+    --info: #38bdf8;
+    --danger: #ef4444;
+    --warning: #fbbf24;
+
+    --shadow-sm: 0 10px 30px rgba(0,0,0,0.22);
+    --shadow-md: 0 20px 50px rgba(0,0,0,0.28);
+    --shadow-lg: 0 30px 80px rgba(0,0,0,0.35);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+
+    font-family: 'Inter', sans-serif;
+
+    background:
+        radial-gradient(circle at top, rgba(139, 92, 246, 0.18), transparent 25%),
+        linear-gradient(180deg, #0c1222 0%, #090b18 60%, #0d1425 100%);
+
+    color: var(--text);
+
+    line-height: 1.6;
+    font-size: 16px;
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+img,
+svg {
+    display: block;
+    max-width: 100%;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* =========================
+   TOPBAR
+========================= */
+
+header.topbar {
+    background: linear-gradient(
+        135deg,
+        #6d28d9 0%,
+        #4c1d95 50%,
+        #2e1067 100%
+    );
+
+    color: white;
+
+    padding: 2rem 1rem;
+
+    box-shadow: var(--shadow-md);
+}
+
+.brand-shell {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 1rem;
+
+    max-width: 1180px;
+    margin: 0 auto;
+}
+
+.brand-shell .eyebrow {
+    margin: 0 0 .4rem;
+
+    color: rgba(255,255,255,0.8);
+
+    font-size: .85rem;
+    letter-spacing: .15em;
+
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.brand-shell h1 {
+    margin: 0;
+
+    font-size: clamp(2rem, 3vw, 3rem);
+
+    line-height: 1.1;
+    font-weight: 800;
+
+    letter-spacing: -0.03em;
+}
+
+.brand-shell p {
+    margin: 0;
+
+    color: rgba(255,255,255,0.8);
+
+    font-size: .95rem;
+}
+
+/* =========================
+   NAVBAR
+========================= */
+
+nav.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 0.8rem 1.2rem;
+
+    position: sticky;
+    top: 0;
+    z-index: 100;
+
+    background: rgba(15, 23, 42, 0.92);
+
+    border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+
+    backdrop-filter: blur(14px);
+
+    box-shadow: var(--shadow-sm);
+}
+
+.navbar .nav-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+
+    gap: .5rem;
+}
+
+.navbar a {
+    color: rgba(255,255,255,0.72);
+
+    padding: .7rem 1rem;
+
+    border-radius: 999px;
+
+    font-size: .95rem;
+    font-weight: 600;
+
+    transition: all .25s ease;
+}
+
+.navbar a:hover,
+.navbar a:focus-visible {
+    background: rgba(139, 92, 246, 0.16);
+
+    color: white;
+}
+
+.navbar .user-info {
+    display: flex;
+    align-items: center;
+
+    gap: .8rem;
+
+    color: white;
+    font-weight: 600;
+}
+
+.navbar .button-link {
+    background: rgba(139, 92, 246, 0.18);
+
+    border: 1px solid rgba(139, 92, 246, 0.22);
+
+    color: white;
+
+    padding: .7rem 1rem;
+
+    border-radius: 999px;
+}
+
+.navbar .button-link:hover {
+    background: rgba(139, 92, 246, 0.28);
+}
+
+/* =========================
+   CONTENT
+========================= */
+
+.main-content {
+    width: min(1180px, calc(100% - 2rem));
+
+    margin: 2rem auto 3rem;
+}
+
+.contenedor {
+    background: rgba(15, 23, 42, 0.72);
+
+    border: 1px solid rgba(148, 163, 184, 0.14);
+
+    border-radius: 26px;
+
+    padding: 2rem;
+
+    backdrop-filter: blur(16px);
+
+    box-shadow: var(--shadow-md);
+}
+
+.section-title {
+    margin: 0 0 1rem;
+
+    font-size: clamp(1.6rem, 2vw, 2.2rem);
+
+    font-weight: 800;
+
+    letter-spacing: -0.03em;
+}
+
+.section-subtitle {
+    margin: 0 0 2rem;
+
+    color: var(--text-muted);
+}
+
+/* =========================
+   GLOBAL EFFECTS
+========================= */
+
+::selection {
+    background: rgba(139, 92, 246, 0.35);
+    color: white;
+}
+
+.card,
+.contenedor,
+table,
+.auth-card,
+.auth-form,
+.create-header {
+    backdrop-filter: blur(14px);
+}

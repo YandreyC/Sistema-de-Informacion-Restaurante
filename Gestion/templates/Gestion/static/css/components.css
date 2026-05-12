@@ -1,0 +1,111 @@
+/* =========================
+   TABLES
+========================= */
+
+table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    margin-top: 1.5rem;
+
+    background: rgba(15, 23, 42, 0.65);
+
+    border: 1px solid rgba(148, 163, 184, 0.12);
+
+    border-radius: 18px;
+
+    overflow: hidden;
+
+    backdrop-filter: blur(10px);
+}
+
+table thead {
+    background: rgba(139, 92, 246, 0.14);
+}
+
+table th,
+table td {
+    padding: 1rem 1.2rem;
+
+    text-align: left;
+
+    border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+table th {
+    color: white;
+
+    font-size: .85rem;
+    font-weight: 700;
+
+    letter-spacing: .08em;
+
+    text-transform: uppercase;
+}
+
+table td {
+    color: rgba(255,255,255,0.92);
+}
+
+table tbody tr {
+    transition: .25s ease;
+}
+
+table tbody tr:hover {
+    background: rgba(139, 92, 246, 0.08);
+}
+
+/* =========================
+   CARDS
+========================= */
+
+.card-grid {
+    display: grid;
+
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+
+    gap: 1.5rem;
+}
+
+.card {
+    background: rgba(30, 41, 59, 0.65);
+
+    border: 1px solid rgba(148, 163, 184, 0.12);
+
+    border-radius: 22px;
+
+    padding: 1.8rem;
+
+    box-shadow: var(--shadow-sm);
+
+    transition: all .25s ease;
+
+    backdrop-filter: blur(14px);
+}
+
+.card:hover {
+    transform: translateY(-4px);
+
+    border-color: rgba(139, 92, 246, 0.3);
+
+    box-shadow: var(--shadow-md);
+}
+
+.card h3 {
+    margin-top: 0;
+
+    margin-bottom: .7rem;
+
+    font-size: 1.2rem;
+
+    font-weight: 700;
+}
+
+.card p {
+    margin: 0;
+
+    color: var(--text-muted);
+
+    line-height: 1.6;
+}

@@ -1,35 +1,94 @@
 {% extends 'gestion/base.html' %}
 
 {% block content %}
-<h2>Panel principal</h2>
 
-<div class="card">
-    <h3>Clientes</h3>
-    <p>{{ total_clientes }}</p>
+<div class="dashboard-header">
+    <h2 class="section-title">Panel principal</h2>
+    <p class="section-subtitle">
+        Resumen general del sistema de gestión.
+    </p>
 </div>
 
-<div class="card">
-    <h3>Empleados</h3>
-    <p>{{ total_empleados }}</p>
+<div class="card-grid dashboard-grid">
+
+    <div class="card dashboard-card">
+        <div class="dashboard-card-content">
+            <div>
+                <span class="dashboard-label">Clientes</span>
+                <h3>{{ total_clientes }}</h3>
+            </div>
+
+            <div class="dashboard-icon">
+                👥
+            </div>
+        </div>
+    </div>
+
+    <div class="card dashboard-card">
+        <div class="dashboard-card-content">
+            <div>
+                <span class="dashboard-label">Empleados</span>
+                <h3>{{ total_empleados }}</h3>
+            </div>
+
+            <div class="dashboard-icon">
+                🧑‍💼
+            </div>
+        </div>
+    </div>
+
+    <div class="card dashboard-card">
+        <div class="dashboard-card-content">
+            <div>
+                <span class="dashboard-label">Mesas</span>
+                <h3>{{ total_mesas }}</h3>
+            </div>
+
+            <div class="dashboard-icon">
+                🪑
+            </div>
+        </div>
+    </div>
+
+    <div class="card dashboard-card">
+        <div class="dashboard-card-content">
+            <div>
+                <span class="dashboard-label">Platos</span>
+                <h3>{{ total_platos }}</h3>
+            </div>
+
+            <div class="dashboard-icon">
+                🍽️
+            </div>
+        </div>
+    </div>
+
+    <div class="card dashboard-card">
+        <div class="dashboard-card-content">
+            <div>
+                <span class="dashboard-label">Órdenes</span>
+                <h3>{{ total_ordenes }}</h3>
+            </div>
+
+            <div class="dashboard-icon">
+                📋
+            </div>
+        </div>
+    </div>
+
+    <div class="card dashboard-card">
+        <div class="dashboard-card-content">
+            <div>
+                <span class="dashboard-label">Facturas</span>
+                <h3>{{ total_facturas }}</h3>
+            </div>
+
+            <div class="dashboard-icon">
+                💳
+            </div>
+        </div>
+    </div>
+
 </div>
 
-<div class="card">
-    <h3>Mesas</h3>
-    <p>{{ total_mesas }}</p>
-</div>
-
-<div class="card">
-    <h3>Platos</h3>
-    <p>{{ total_platos }}</p>
-</div>
-
-<div class="card">
-    <h3>Órdenes</h3>
-    <p>{{ total_ordenes }}</p>
-</div>
-
-<div class="card">
-    <h3>Facturas</h3>
-    <p>{{ total_facturas }}</p>
-</div>
 {% endblock %}

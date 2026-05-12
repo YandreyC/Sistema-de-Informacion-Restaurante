@@ -1,11 +1,17 @@
 {% extends 'gestion/base.html' %}
 
 {% block content %}
-<h2>{{ titulo }}</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Guardar</button>
-    <a href="javascript:history.back()">Cancelar</a>
-</form>
+<div class="form-container">
+    <div class="form-header">
+        <h2>{{ titulo }}</h2>
+    </div>
+    <form method="post" class="dark-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="form-actions">
+            <button type="submit" class="btn-primary">💾 Guardar cambios</button>
+            <a href="javascript:history.back()" class="btn-secondary">↩️ Cancelar</a>
+        </div>
+    </form>
+</div>
 {% endblock %}

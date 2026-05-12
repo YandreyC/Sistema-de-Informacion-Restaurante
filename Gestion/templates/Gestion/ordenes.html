@@ -1,8 +1,10 @@
 {% extends 'gestion/base.html' %}
 
 {% block content %}
-<h2>Órdenes</h2>
-<p><a href="/ordenes/crear/">Crear orden</a></p>
+<div class="create-header">
+    <h2>📋 Órdenes</h2>
+    <a href="/ordenes/crear/" class="btn-add btn-small">✨ Nueva orden</a>
+</div>
 <table>
     <tr>
         <th>ID</th>
@@ -23,9 +25,9 @@
         <td>{{ orden.fecha_hora }}</td>
         <td>{{ orden.estado_orden }}</td>
         <td>{{ orden.total }}</td>
-        <td>
-            <a href="/ordenes/{{ orden.id }}/editar/">Editar</a> |
-            <a href="/ordenes/{{ orden.id }}/eliminar/">Eliminar</a>
+        <td class="td-actions">
+            <a href="/ordenes/{{ orden.id }}/editar/" class="btn-edit btn-small">✏️ Editar</a>
+            <a href="/ordenes/{{ orden.id }}/eliminar/" class="btn-delete btn-small">🗑️ Eliminar</a>
         </td>
     </tr>
     {% endfor %}

@@ -1,0 +1,140 @@
+button,
+input[type='submit'],
+input[type='button'],
+a.button-link {
+    border: none;
+
+    border-radius: 14px;
+
+    padding: 1rem 1.4rem;
+
+    font-size: .95rem;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: .25s ease;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: .5rem;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.btn-primary,
+.btn-add {
+    background: linear-gradient(135deg, #8b5cf6, #ec4899);
+
+    color: white;
+
+    box-shadow: 0 4px 18px rgba(139, 92, 246, 0.28);
+}
+
+.btn-primary:hover,
+.btn-add:hover {
+    background: linear-gradient(135deg, #7c3aed, #db2777);
+
+    transform: translateY(-3px);
+}
+
+.btn-edit {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+
+    color: white;
+}
+
+.btn-delete {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+
+    color: white;
+}
+
+.btn-edit:hover,
+.btn-delete:hover {
+    transform: translateY(-3px);
+}
+
+.btn-small {
+    padding: .55rem .95rem;
+
+    font-size: .85rem;
+}
+
+/* =========================
+   ALERTS
+========================= */
+
+.alert-box,
+.mensaje {
+    background: rgba(15, 23, 42, 0.9);
+
+    border: 1px solid rgba(148, 163, 184, 0.15);
+
+    border-left: 4px solid var(--primary);
+
+    border-radius: 14px;
+
+    padding: 1rem 1.2rem;
+
+    margin-bottom: 1rem;
+
+    color: white;
+}
+
+.alert-box.success {
+    border-left-color: #22c55e;
+}
+
+.alert-box.error {
+    border-left-color: #ef4444;
+}
+
+.alert-box.warning {
+    border-left-color: #fbbf24;
+}
+
+.alert-box.info {
+    border-left-color: #38bdf8;
+}
+
+/* =========================
+   ACTIONS
+========================= */
+
+.action-buttons,
+.td-actions {
+    display: flex;
+
+    gap: .6rem;
+
+    flex-wrap: wrap;
+}
+
+.create-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 2rem;
+
+    padding: 1.5rem;
+
+    background: rgba(15, 23, 42, 0.75);
+
+    border: 1px solid rgba(148, 163, 184, 0.12);
+
+    border-radius: 20px;
+
+    box-shadow: var(--shadow-sm);
+}
+
+.create-header h2 {
+    margin: 0;
+
+    color: white;
+}

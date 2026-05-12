@@ -1,11 +1,13 @@
 {% extends 'gestion/base.html' %}
 
 {% block content %}
-<h2>{{ titulo }}</h2>
-<p>¿Estás seguro de que deseas eliminar <strong>{{ objeto }}</strong>?</p>
-<form method="post">
+<div class="alert-box warning" style="margin: 2rem 0; border-radius: 12px;">
+    <strong>⚠️ Confirmación de eliminación</strong>
+    <p style="margin-top: 0.5rem; margin-bottom: 0;">¿Estás seguro de que deseas eliminar <strong>{{ objeto }}</strong>? Esta acción no se puede deshacer.</p>
+</div>
+<form method="post" style="display: flex; gap: 1rem; margin-top: 2rem;">
     {% csrf_token %}
-    <button type="submit">Eliminar</button>
-    <a href="{% url ruta_cancelar %}">Cancelar</a>
+    <button type="submit" class="btn-delete">🗑️ Eliminar definitivamente</button>
+    <a href="{% url ruta_cancelar %}" class="btn-secondary" style="display: inline-flex; align-items: center; justify-content: center; padding: 1rem 1.4rem;">❌ Cancelar</a>
 </form>
 {% endblock %}

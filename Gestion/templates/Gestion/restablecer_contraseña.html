@@ -1,169 +1,41 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Restablecer Contraseña - Restaurante Pasta La Vista</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #8B0000 0%, #b22222 100%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-        
-        .contenedor {
-            background: white;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-            width: 100%;
-            max-width: 400px;
-        }
-        
-        .logo {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        
-        .logo h1 {
-            color: #8B0000;
-            font-size: 28px;
-            margin-bottom: 5px;
-        }
-        
-        .logo p {
-            color: #666;
-            font-size: 14px;
-        }
-        
-        .formulario {
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .grupo-form {
-            margin-bottom: 20px;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: #333;
-            font-weight: bold;
-            font-size: 14px;
-        }
-        
-        input[type="password"] {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 14px;
-            transition: border-color 0.3s;
-        }
-        
-        input[type="password"]:focus {
-            outline: none;
-            border-color: #8B0000;
-            box-shadow: 0 0 5px rgba(139, 0, 0, 0.2);
-        }
-        
-        .btn {
-            background-color: #8B0000;
-            color: white;
-            padding: 12px;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        
-        .btn:hover {
-            background-color: #b22222;
-        }
-        
-        .mensajes {
-            margin-bottom: 20px;
-        }
-        
-        .alerta {
-            padding: 12px;
-            border-radius: 5px;
-            margin-bottom: 10px;
-            font-size: 14px;
-        }
-        
-        .alerta-error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-        
-        .alerta-warning {
-            background-color: #fff3cd;
-            color: #856404;
-            border: 1px solid #ffc107;
-        }
-        
-        small {
-            color: red;
-            font-size: 12px;
-            display: block;
-            margin-top: 3px;
-        }
-    </style>
-</head>
-<body>
-    <div class="contenedor">
-        <div class="logo">
-            <h1>🍝 Restaurante</h1>
-            <p>Pasta La Vista - Nueva Contraseña</p>
-        </div>
-        
-        {% if messages %}
-        <div class="mensajes">
+{% extends 'gestion/auth_base.html' %}
+
+{% block title %}Nueva Contraseña · Pasta La Vista{% endblock %}
+{% block heading %}Crea tu nueva contraseña{% endblock %}
+{% block subheading %}Introduce una contraseña segura para continuar con tu cuenta.{% endblock %}
+
+{% block content %}
+    {% if messages %}
+        <div class="alert-grid">
             {% for message in messages %}
-                {% if message.tags %}
-                    <div class="alerta alerta-{{ message.tags }}">
-                        {{ message }}
-                    </div>
-                {% endif %}
+                <div class="alert-box alert-box-{{ message.tags }}">{{ message }}</div>
             {% endfor %}
         </div>
-        {% endif %}
-        
-        <form method="POST" class="formulario">
-            {% csrf_token %}
-            
-            <div class="grupo-form">
-                <label for="id_new_password1">Nueva Contraseña:</label>
-                {{ form.new_password1 }}
-                {% if form.new_password1.errors %}
-                    <small>{{ form.new_password1.errors.0 }}</small>
-                {% endif %}
-            </div>
-            
-            <div class="grupo-form">
-                <label for="id_new_password2">Confirmar Contraseña:</label>
-                {{ form.new_password2 }}
-                {% if form.new_password2.errors %}
-                    <small>{{ form.new_password2.errors.0 }}</small>
-                {% endif %}
-            </div>
-            
-            <button type="submit" class="btn">Cambiar Contraseña</button>
-        </form>
-    </div>
-</body>
-</html>
+    {% endif %}
+
+    <form method="POST" class="auth-form">
+        {% csrf_token %}
+
+        <div class="form-field">
+            <label for="id_new_password1">Nueva contraseña</label>
+            {{ form.new_password1 }}
+            {% if form.new_password1.errors %}
+                <span class="field-error">{{ form.new_password1.errors.0 }}</span>
+            {% endif %}
+        </div>
+
+        <div class="form-field">
+            <label for="id_new_password2">Confirmar contraseña</label>
+            {{ form.new_password2 }}
+            {% if form.new_password2.errors %}
+                <span class="field-error">{{ form.new_password2.errors.0 }}</span>
+            {% endif %}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Cambiar contraseña</button>
+
+        <div class="auth-links">
+            <a href="{% url 'login_admin' %}">Volver al login</a>
+        </div>
+    </form>
+{% endblock %}

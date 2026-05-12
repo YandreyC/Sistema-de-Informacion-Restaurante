@@ -1,8 +1,10 @@
 {% extends 'gestion/base.html' %}
 
 {% block content %}
-<h2>Empleados</h2>
-<p><a href="/empleados/crear/">Crear empleado</a></p>
+<div class="create-header">
+    <h2>👔 Empleados</h2>
+    <a href="/empleados/crear/" class="btn-add btn-small">✨ Nuevo empleado</a>
+</div>
 <table>
     <tr>
         <th>ID</th>
@@ -19,9 +21,9 @@
         <td>{{ empleado.cargo }}</td>
         <td>{{ empleado.telefono }}</td>
         <td>{{ empleado.correo }}</td>
-        <td>
-            <a href="/empleados/{{ empleado.id }}/editar/">Editar</a> |
-            <a href="/empleados/{{ empleado.id }}/eliminar/">Eliminar</a>
+        <td class="td-actions">
+            <a href="/empleados/{{ empleado.id }}/editar/" class="btn-edit btn-small">✏️ Editar</a>
+            <a href="/empleados/{{ empleado.id }}/eliminar/" class="btn-delete btn-small">🗑️ Eliminar</a>
         </td>
     </tr>
     {% endfor %}
