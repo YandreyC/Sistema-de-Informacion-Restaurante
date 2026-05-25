@@ -5,7 +5,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.views.decorators.http import require_http_methods
-from .models import Cliente, Empleado, Mesa, Plato, Orden, Factura, Administrador
+from django.db.models import Q
+from .models import Cliente, Empleado, Mesa, Plato, Orden, Factura, Administrador, DetalleOrden
 from .forms import (
     RegistroAdminForm,
     LoginForm,
@@ -16,6 +17,7 @@ from .forms import (
     MesaForm,
     PlatoForm,
     OrdenForm,
+    DetalleOrdenForm,
     FacturaForm,
 )
 from django.contrib.auth.models import User
@@ -186,90 +188,173 @@ def ordenes(request):
 @login_required(login_url='login_admin')
 @admin_required
 def ordenes_crear(request):
+    platos = Plato.objects.filter(disponible=True)
     if request.method == 'POST':
         form = OrdenForm(request.POST)
         if form.is_valid():
-            form.save()
-            messages.success(request, 'Orden creada correctamente.')
-            return redirect('ordenes')
+            # Crear la orden sin guardar aún (no guardamos hasta agregar los platos)
+            orden = form.save(commit=False)
+            orden.estado_orden = 'Activa'
+            orden.total = 0
+            orden.save()
+            
+            # Procesar los platos agregados
+            platos_ids = request.POST.getlist('plato_id')
+            cantidades = request.POST.getlist('cantidad')
+            
+            total_orden = 0
+            detalles_creados = False
+            
+            for plato_id, cantidad in zip(platos_ids, cantidades):
+                if plato_id and cantidad:
+                    try:
+                        plato = Plato.objects.get(id=int(plato_id))
+                        cantidad = int(cantidad)
+                        if cantidad > 0:
+                            detalle = DetalleOrden.objects.create(
+                                orden=orden,
+                                plato=plato,
+                                cantidad=cantidad
+                            )
+                            total_orden += detalle.subtotal
+                            detalles_creados = True
+                    except (Plato.DoesNotExist, ValueError):
+                        continue
+            
+            if detalles_creados:
+                orden.total = total_orden
+                orden.save()
+                orden.mesa.estado_mesa = 'Ocupada'
+                orden.mesa.save(update_fields=['estado_mesa'])
+                messages.success(request, 'Orden creada correctamente con los platos seleccionados.')
+                return redirect('ordenes')
+            else:
+                # Si no se agregó ningún plato, eliminar la orden creada
+                orden.delete()
+                messages.error(request, 'Debes agregar al menos un plato a la orden.')
+                return redirect('ordenes_crear')
     else:
         form = OrdenForm()
-    return render(request, 'Gestion/formulario.html', {'form': form, 'titulo': 'Crear Orden'})
+    
+    return render(request, 'Gestion/crear_orden.html', {
+        'form': form,
+        'platos': platos,
+        'titulo': '📋 Nueva Orden',
+        'submit_text': '✓ Crear Orden',
+        'detalles': [],
+    })
 
 @login_required(login_url='login_admin')
 @admin_required
 def ordenes_editar(request, pk):
     orden = get_object_or_404(Orden, pk=pk)
+
+    if orden.estado_orden == 'Facturada':
+        messages.warning(request, 'No se puede editar una orden que ya está facturada.')
+        return redirect('ordenes')
+
+    original_mesa = orden.mesa
+    platos = Plato.objects.filter(Q(disponible=True) | Q(id__in=orden.detalles.values_list('plato', flat=True))).distinct()
+
     if request.method == 'POST':
         form = OrdenForm(request.POST, instance=orden)
         if form.is_valid():
-            form.save()
-            messages.success(request, 'Orden actualizada correctamente.')
-            return redirect('ordenes')
+            orden = form.save(commit=False)
+
+            platos_ids = request.POST.getlist('plato_id')
+            cantidades = request.POST.getlist('cantidad')
+            total_orden = 0
+            detalles_creados = False
+            detalles_data = []
+
+            for plato_id, cantidad in zip(platos_ids, cantidades):
+                if plato_id and cantidad:
+                    try:
+                        plato = Plato.objects.get(id=int(plato_id))
+                        cantidad = int(cantidad)
+                        if cantidad > 0:
+                            detalles_data.append((plato, cantidad))
+                            total_orden += plato.precio * cantidad
+                            detalles_creados = True
+                    except (Plato.DoesNotExist, ValueError):
+                        continue
+
+            if detalles_creados:
+                if orden.mesa != original_mesa:
+                    original_mesa.estado_mesa = 'Disponible'
+                    original_mesa.save(update_fields=['estado_mesa'])
+                    orden.mesa.estado_mesa = 'Ocupada'
+                    orden.mesa.save(update_fields=['estado_mesa'])
+
+                orden.total = total_orden
+                orden.save()
+                DetalleOrden.objects.filter(orden=orden).delete()
+
+                for plato, cantidad in detalles_data:
+                    DetalleOrden.objects.create(
+                        orden=orden,
+                        plato=plato,
+                        cantidad=cantidad
+                    )
+
+                messages.success(request, 'Orden actualizada correctamente.')
+                return redirect('ordenes')
+            else:
+                messages.error(request, 'Debes agregar al menos un plato a la orden.')
     else:
         form = OrdenForm(instance=orden)
-    return render(request, 'Gestion/formulario.html', {'form': form, 'titulo': 'Editar Orden'})
+
+    return render(request, 'Gestion/crear_orden.html', {
+        'form': form,
+        'platos': platos,
+        'titulo': '✏️ Editar Orden',
+        'submit_text': '✓ Guardar cambios',
+        'detalles': orden.detalles.all(),
+    })
 
 @login_required(login_url='login_admin')
 @admin_required
-def ordenes_eliminar(request, pk):
+def orden_atender(request, pk):
     orden = get_object_or_404(Orden, pk=pk)
-    if request.method == 'POST':
-        orden.delete()
-        messages.success(request, 'Orden eliminada correctamente.')
+    orden.estado_orden = 'Entregada'
+    orden.save()
+    messages.success(request, 'Orden marcada como entregada.')
+    return redirect('ordenes')
+
+@login_required(login_url='login_admin')
+@admin_required
+def orden_facturar(request, pk):
+    orden = get_object_or_404(Orden, pk=pk)
+    
+    # Verificar si ya existe una factura
+    if Factura.objects.filter(orden=orden).exists():
+        messages.warning(request, 'Esta orden ya tiene una factura.')
         return redirect('ordenes')
-    return render(request, 'Gestion/confirmar_eliminar.html', {
-        'objeto': orden,
-        'titulo': 'Eliminar Orden',
-        'ruta_cancelar': 'ordenes',
-    })
+    
+    if request.method == 'POST':
+        metodo_pago = request.POST.get('metodo_pago', 'Efectivo')
+
+        orden.update_total()
+        factura = Factura.objects.create(
+            orden=orden,
+            metodo_pago=metodo_pago
+        )
+        
+        orden.estado_orden = 'Facturada'
+        orden.save(update_fields=['estado_orden'])
+        orden.mesa.estado_mesa = 'Disponible'
+        orden.mesa.save(update_fields=['estado_mesa'])
+        
+        messages.success(request, f'Factura #{factura.id} creada exitosamente.')
+        return redirect('ordenes')
+    
+    return render(request, 'Gestion/facturar_orden.html', {'orden': orden})
 
 @login_required(login_url='login_admin')
 @admin_required
 def facturas(request):
     facturas = Factura.objects.all()
     return render(request, 'Gestion/facturas.html', {'facturas': facturas})
-
-@login_required(login_url='login_admin')
-@admin_required
-def facturas_crear(request):
-    if request.method == 'POST':
-        form = FacturaForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Factura creada correctamente.')
-            return redirect('facturas')
-    else:
-        form = FacturaForm()
-    return render(request, 'Gestion/formulario.html', {'form': form, 'titulo': 'Crear Factura'})
-
-@login_required(login_url='login_admin')
-@admin_required
-def facturas_editar(request, pk):
-    factura = get_object_or_404(Factura, pk=pk)
-    if request.method == 'POST':
-        form = FacturaForm(request.POST, instance=factura)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Factura actualizada correctamente.')
-            return redirect('facturas')
-    else:
-        form = FacturaForm(instance=factura)
-    return render(request, 'Gestion/formulario.html', {'form': form, 'titulo': 'Editar Factura'})
-
-@login_required(login_url='login_admin')
-@admin_required
-def facturas_eliminar(request, pk):
-    factura = get_object_or_404(Factura, pk=pk)
-    if request.method == 'POST':
-        factura.delete()
-        messages.success(request, 'Factura eliminada correctamente.')
-        return redirect('facturas')
-    return render(request, 'Gestion/confirmar_eliminar.html', {
-        'objeto': factura,
-        'titulo': 'Eliminar Factura',
-        'ruta_cancelar': 'facturas',
-    })
 
 @login_required(login_url='login_admin')
 @admin_required

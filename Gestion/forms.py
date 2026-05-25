@@ -1,7 +1,8 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from .models import Administrador, Cliente, Empleado, Mesa, Plato, Orden, Factura
+from django.db.models import Q
+from .models import Administrador, Cliente, Empleado, Mesa, Plato, Orden, Factura, DetalleOrden
 
 class RegistroAdminForm(UserCreationForm):
     email = forms.EmailField(
@@ -135,13 +136,35 @@ class PlatoForm(forms.ModelForm):
 class OrdenForm(forms.ModelForm):
     class Meta:
         model = Orden
-        fields = ['cliente', 'empleado', 'mesa', 'estado_orden', 'total']
+        fields = ['cliente', 'empleado', 'mesa']
         widgets = {
             'cliente': forms.Select(attrs={'class': 'form-control'}),
             'empleado': forms.Select(attrs={'class': 'form-control'}),
             'mesa': forms.Select(attrs={'class': 'form-control'}),
-            'estado_orden': forms.Select(attrs={'class': 'form-control'}),
-            'total': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01', 'placeholder': 'Total'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance and self.instance.pk:
+            self.fields['mesa'].queryset = Mesa.objects.filter(
+                Q(estado_mesa='Disponible') | Q(pk=self.instance.mesa.pk)
+            )
+        else:
+            self.fields['mesa'].queryset = Mesa.objects.filter(estado_mesa='Disponible')
+
+
+class DetalleOrdenForm(forms.ModelForm):
+    class Meta:
+        model = DetalleOrden
+        fields = ['plato', 'cantidad']
+        widgets = {
+            'plato': forms.Select(attrs={'class': 'form-control'}),
+            'cantidad': forms.NumberInput(attrs={
+                'class': 'form-control',
+                'min': '1',
+                'value': '1',
+                'placeholder': 'Cantidad'
+            }),
         }
 
 

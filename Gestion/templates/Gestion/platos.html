@@ -5,29 +5,35 @@
     <h2>🍽️ Platos</h2>
     <a href="/platos/crear/" class="btn-add btn-small">✨ Nuevo plato</a>
 </div>
-<table>
-    <tr>
-        <th>ID</th>
-        <th>Nombre</th>
-        <th>Descripción</th>
-        <th>Precio</th>
-        <th>Categoría</th>
-        <th>Disponible</th>
-        <th>Acciones</th>
-    </tr>
-    {% for plato in platos %}
-    <tr>
-        <td>{{ plato.id }}</td>
-        <td>{{ plato.nombre_plato }}</td>
-        <td>{{ plato.descripcion }}</td>
-        <td>{{ plato.precio }}</td>
-        <td>{{ plato.categoria }}</td>
-        <td>{{ plato.disponible }}</td>
-        <td class="td-actions">
-            <a href="/platos/{{ plato.id }}/editar/" class="btn-edit btn-small">✏️ Editar</a>
-            <a href="/platos/{{ plato.id }}/eliminar/" class="btn-delete btn-small">🗑️ Eliminar</a>
-        </td>
-    </tr>
-    {% endfor %}
-</table>
+<div class="table-wrapper">
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Precio</th>
+                <th>Categoría</th>
+                <th>Disponible</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for plato in platos %}
+            <tr>
+                <td>{{ plato.id }}</td>
+                <td>{{ plato.nombre_plato }}</td>
+                <td>{{ plato.descripcion }}</td>
+                <td>{{ plato.precio }}</td>
+                <td>{{ plato.categoria }}</td>
+                <td>{{ plato.disponible }}</td>
+                <td class="td-actions">
+                    <a href="/platos/{{ plato.id }}/editar/" class="btn-edit btn-small">✏️ Editar</a>
+                    <a href="/platos/{{ plato.id }}/eliminar/" class="btn-delete btn-small">🗑️ Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}

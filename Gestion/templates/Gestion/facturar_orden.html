@@ -1,0 +1,97 @@
+{% extends 'gestion/base.html' %}
+
+{% block content %}
+<div class="create-header">
+    <h2>💳 Generar Factura - Orden #{{ orden.id }}</h2>
+</div>
+
+<div class="panel">
+    <h3>Resumen de Orden</h3>
+    <div class="table-wrapper">
+        <table>
+            <tbody>
+                <tr>
+                    <th>Cliente</th>
+                    <td>{{ orden.cliente.nombre }}</td>
+                </tr>
+                <tr>
+                    <th>Empleado</th>
+                    <td>{{ orden.empleado.nombre }}</td>
+                </tr>
+                <tr>
+                    <th>Mesa</th>
+                    <td>{{ orden.mesa.numero_mesa }}</td>
+                </tr>
+                <tr>
+                    <th>Fecha</th>
+                    <td>{{ orden.fecha_hora|date:"d/m/Y H:i" }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    {% if orden.detalles.all %}
+    <h3>Platos Ordenados</h3>
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Plato</th>
+                    <th class="text-center">Cantidad</th>
+                    <th class="text-right">Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for detalle in orden.detalles.all %}
+                <tr>
+                    <td>{{ detalle.plato.nombre_plato }}</td>
+                    <td class="text-center">{{ detalle.cantidad }}</td>
+                    <td class="text-right">$ {{ detalle.subtotal }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+
+    <h3>Totales</h3>
+    <div class="table-wrapper">
+        <table>
+            <tbody>
+                <tr>
+                    <th>Subtotal</th>
+                    <td class="text-right">$ {{ orden.total }}</td>
+                </tr>
+                <tr>
+                    <th>IVA (19%)</th>
+                    <td class="text-right">$ {% widthratio orden.total 100 19 %}</td>
+                </tr>
+                <tr class="summary-row">
+                    <th>TOTAL A PAGAR</th>
+                    <td class="text-right">$ {% widthratio orden.total 100 119 %}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <form method="POST" class="panel">
+        {% csrf_token %}
+        <div class="form-field">
+            <label for="metodo_pago">Método de Pago:</label>
+            <select name="metodo_pago" id="metodo_pago" class="form-control">
+                <option value="Efectivo" selected>Efectivo</option>
+                <option value="Tarjeta">Tarjeta</option>
+                <option value="Transferencia">Transferencia</option>
+                <option value="Nequi">Nequi</option>
+                <option value="Daviplata">Daviplata</option>
+            </select>
+        </div>
+        
+        <div class="action-row">
+            <a href="/ordenes/" class="btn-delete btn-small">✕ Cancelar</a>
+            <button type="submit" class="btn-edit btn-small">✓ Generar Factura</button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

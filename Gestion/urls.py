@@ -30,9 +30,7 @@ urlpatterns = [
     path('ordenes/', views.ordenes, name='ordenes'),
     path('ordenes/crear/', views.ordenes_crear, name='ordenes_crear'),
     path('ordenes/<int:pk>/editar/', views.ordenes_editar, name='ordenes_editar'),
-    path('ordenes/<int:pk>/eliminar/', views.ordenes_eliminar, name='ordenes_eliminar'),
+    path('ordenes/<int:pk>/atender/', views.orden_atender, name='orden_atender'),
+    path('ordenes/<int:pk>/facturar/', views.orden_facturar, name='orden_facturar'),
     path('facturas/', views.facturas, name='facturas'),
-    path('facturas/crear/', views.facturas_crear, name='facturas_crear'),
-    path('facturas/<int:pk>/editar/', views.facturas_editar, name='facturas_editar'),
-    path('facturas/<int:pk>/eliminar/', views.facturas_eliminar, name='facturas_eliminar'),
 ]

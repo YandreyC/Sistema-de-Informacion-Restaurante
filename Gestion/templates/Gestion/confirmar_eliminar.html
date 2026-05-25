@@ -1,13 +1,13 @@
 {% extends 'gestion/base.html' %}
 
 {% block content %}
-<div class="alert-box warning" style="margin: 2rem 0; border-radius: 12px;">
+<div class="alert-box warning">
     <strong>⚠️ Confirmación de eliminación</strong>
-    <p style="margin-top: 0.5rem; margin-bottom: 0;">¿Estás seguro de que deseas eliminar <strong>{{ objeto }}</strong>? Esta acción no se puede deshacer.</p>
+    <p class="message-text">¿Estás seguro de que deseas eliminar <strong>{{ objeto }}</strong>? Esta acción no se puede deshacer.</p>
 </div>
-<form method="post" style="display: flex; gap: 1rem; margin-top: 2rem;">
+<form method="post" class="action-row">
     {% csrf_token %}
     <button type="submit" class="btn-delete">🗑️ Eliminar definitivamente</button>
-    <a href="{% url ruta_cancelar %}" class="btn-secondary" style="display: inline-flex; align-items: center; justify-content: center; padding: 1rem 1.4rem;">❌ Cancelar</a>
+    <a href="{% url ruta_cancelar %}" class="btn-secondary">❌ Cancelar</a>
 </form>
 {% endblock %}

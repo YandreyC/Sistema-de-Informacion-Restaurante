@@ -5,31 +5,50 @@
     <h2>📋 Órdenes</h2>
     <a href="/ordenes/crear/" class="btn-add btn-small">✨ Nueva orden</a>
 </div>
-<table>
-    <tr>
-        <th>ID</th>
-        <th>Cliente</th>
-        <th>Empleado</th>
-        <th>Mesa</th>
-        <th>Fecha</th>
-        <th>Estado</th>
-        <th>Total</th>
-        <th>Acciones</th>
-    </tr>
-    {% for orden in ordenes %}
-    <tr>
-        <td>{{ orden.id }}</td>
-        <td>{{ orden.cliente.nombre }}</td>
-        <td>{{ orden.empleado.nombre }}</td>
-        <td>{{ orden.mesa.numero_mesa }}</td>
-        <td>{{ orden.fecha_hora }}</td>
-        <td>{{ orden.estado_orden }}</td>
-        <td>{{ orden.total }}</td>
-        <td class="td-actions">
-            <a href="/ordenes/{{ orden.id }}/editar/" class="btn-edit btn-small">✏️ Editar</a>
-            <a href="/ordenes/{{ orden.id }}/eliminar/" class="btn-delete btn-small">🗑️ Eliminar</a>
-        </td>
-    </tr>
-    {% endfor %}
-</table>
+<div class="table-wrapper">
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Cliente</th>
+                <th>Empleado</th>
+                <th>Mesa</th>
+                <th>Fecha</th>
+                <th>Platos</th>
+                <th>Estado</th>
+                <th>Total</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for orden in ordenes %}
+            <tr>
+                <td>{{ orden.id }}</td>
+                <td>{{ orden.cliente.nombre }}</td>
+                <td>{{ orden.empleado.nombre }}</td>
+                <td>{{ orden.mesa.numero_mesa }}</td>
+                <td>{{ orden.fecha_hora }}</td>
+                <td>
+                    {% for detalle in orden.detalles.all %}
+                        {{ detalle.plato.nombre_plato }} ({{ detalle.cantidad }})<br>
+                    {% endfor %}
+                </td>
+                <td>{{ orden.estado_orden }}</td>
+                <td>{{ orden.total }}</td>
+                <td class="td-actions">
+                    {% if orden.estado_orden != 'Facturada' %}
+                        <a href="/ordenes/{{ orden.id }}/editar/" class="btn-edit btn-small">✏️ Editar</a>
+                    {% endif %}
+                    {% if orden.estado_orden != 'Entregada' and orden.estado_orden != 'Facturada' and orden.estado_orden != 'Cancelada' %}
+                        <a href="/ordenes/{{ orden.id }}/atender/" class="btn-edit btn-small">✓ Atender</a>
+                    {% endif %}
+                    {% if orden.estado_orden == 'Entregada' %}
+                        <a href="/ordenes/{{ orden.id }}/facturar/" class="btn-edit btn-small">💳 Facturar</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}

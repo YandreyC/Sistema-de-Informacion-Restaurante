@@ -56,6 +56,61 @@ table tbody tr:hover {
     background: rgba(139, 92, 246, 0.08);
 }
 
+.table-wrapper {
+    width: 100%;
+    margin-bottom: 1.5rem;
+    overflow-x: auto;
+}
+
+.table-wrapper table {
+    width: 100%;
+    min-width: 640px;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.panel,
+.summary-card {
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(148, 163, 184, 0.12);
+    border-radius: 20px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.panel h3,
+.summary-card h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+.action-row,
+.btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.action-row {
+    margin-top: 1rem;
+}
+.message-text {
+    margin-top: .75rem;
+    margin-bottom: 0;
+    color: rgba(255,255,255,0.88);
+}
+
+.summary-row th,
+.summary-row td {
+    font-weight: 700;
+}
 /* =========================
    CARDS
 ========================= */

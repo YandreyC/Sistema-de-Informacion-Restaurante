@@ -1,0 +1,221 @@
+{% extends 'gestion/base.html' %}
+
+{% block content %}
+<div class="create-header">
+    <h2>{{ titulo|default:'📋 Nueva Orden' }}</h2>
+</div>
+
+<form method="POST">
+    {% csrf_token %}
+    
+    <h3>Información de la Orden</h3>
+    <div class="form-row">
+        <div class="form-field">
+            <label for="id_cliente">Cliente:</label>
+            {{ form.cliente }}
+            {% if form.cliente.errors %}
+                <div class="error">{{ form.cliente.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="form-field">
+            <label for="id_empleado">Empleado:</label>
+            {{ form.empleado }}
+            {% if form.empleado.errors %}
+                <div class="error">{{ form.empleado.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="form-field">
+            <label for="id_mesa">Mesa:</label>
+            {{ form.mesa }}
+            {% if form.mesa.errors %}
+                <div class="error">{{ form.mesa.errors }}</div>
+            {% endif %}
+        </div>
+    </div>
+
+    <h3>Platos Ordenados</h3>
+    <div class="table-wrapper">
+        <table id="platos-table">
+            <thead>
+                <tr>
+                    <th>Plato</th>
+                    <th class="text-right">Precio Unitario</th>
+                    <th class="text-center">Cantidad</th>
+                    <th class="text-right">Subtotal</th>
+                    <th class="text-center">Acción</th>
+                </tr>
+            </thead>
+            <tbody id="platos-body">
+                <!-- Las filas de platos se agregan aquí -->
+            </tbody>
+        </table>
+    </div>
+
+    <button type="button" id="agregar-plato-btn" class="btn-edit btn-small">➕ Agregar Plato</button>
+
+    <!-- Totales -->
+    <div class="summary-card text-right">
+        <div class="summary-total">
+            Total: $ <span id="total-orden">0.00</span>
+        </div>
+    </div>
+
+    <!-- Botones de acción -->
+    <div class="action-row">
+        <a href="/ordenes/" class="btn-delete btn-small">✕ Cancelar</a>
+        <button type="submit" class="btn-edit btn-small">{{ submit_text|default:'✓ Crear Orden' }}</button>
+    </div>
+</form>
+
+<script>
+    const platosPorID = {};
+    {% for plato in platos %}
+        platosPorID[{{ plato.id }}] = {
+            id: {{ plato.id }},
+            nombre: "{{ plato.nombre_plato }}",
+            precio: {{ plato.precio }}
+        };
+    {% endfor %}
+
+    let platoRow = 0;
+
+    function crearFilaPlato(platoData = null) {
+        platoRow++;
+        const rowId = platoRow;
+        
+        let platoHTML = '<option value="">-- Selecciona un plato --</option>';
+        {% for plato in platos %}
+            platoHTML += '<option value="{{ plato.id }}">{{ plato.nombre_plato }} ($ {{ plato.precio }})</option>';
+        {% endfor %}
+
+        const fila = document.createElement('tr');
+        fila.id = `fila-${rowId}`;
+        fila.innerHTML = `
+            <td>
+                <select class="form-control plato-select" data-row="${rowId}">
+                    ${platoHTML}
+                </select>
+            </td>
+            <td>
+                <input type="text" class="form-control precio-unitario text-right" value="0.00" readonly>
+            </td>
+            <td>
+                <input type="number" name="cantidad" class="form-control cantidad text-center" min="1" value="1" data-row="${rowId}">
+            </td>
+            <td>
+                <input type="text" class="form-control subtotal text-right" value="0.00" readonly>
+            </td>
+            <td>
+                <button type="button" class="btn-delete btn-small" onclick="eliminarFila(${rowId})">🗑️ Eliminar</button>
+            </td>
+        `;
+
+        document.getElementById('platos-body').appendChild(fila);
+
+        // Event listeners
+        fila.querySelector('.plato-select').addEventListener('change', function() {
+            actualizarFila(rowId);
+        });
+
+        fila.querySelector('.cantidad').addEventListener('change', function() {
+            actualizarFila(rowId);
+        });
+
+        if (platoData) {
+            const select = fila.querySelector('.plato-select');
+            const cantidadInput = fila.querySelector('.cantidad');
+            select.value = platoData.id;
+            cantidadInput.value = platoData.cantidad;
+            actualizarFila(rowId);
+        }
+    }
+
+    function actualizarFila(rowId) {
+        const fila = document.getElementById(`fila-${rowId}`);
+        const platoSelect = fila.querySelector('.plato-select');
+        const cantidad = parseInt(fila.querySelector('.cantidad').value) || 0;
+        
+        if (platoSelect.value) {
+            const plato = platosPorID[platoSelect.value];
+            const precioUnitario = parseFloat(plato.precio);
+            const subtotal = precioUnitario * cantidad;
+            
+            fila.querySelector('.precio-unitario').value = precioUnitario.toFixed(2);
+            fila.querySelector('.subtotal').value = subtotal.toFixed(2);
+        } else {
+            fila.querySelector('.precio-unitario').value = '0.00';
+            fila.querySelector('.subtotal').value = '0.00';
+        }
+        
+        actualizarTotal();
+    }
+
+    function actualizarTotal() {
+        let total = 0;
+        document.querySelectorAll('.subtotal').forEach(function(elem) {
+            total += parseFloat(elem.value) || 0;
+        });
+        document.getElementById('total-orden').textContent = total.toFixed(2);
+    }
+
+    function eliminarFila(rowId) {
+        const fila = document.getElementById(`fila-${rowId}`);
+        fila.remove();
+        actualizarTotal();
+    }
+
+    document.getElementById('agregar-plato-btn').addEventListener('click', function(e) {
+        e.preventDefault();
+        crearFilaPlato();
+    });
+
+    const detallesOrden = [
+        {% for detalle in detalles %}
+            { id: {{ detalle.plato.id }}, cantidad: {{ detalle.cantidad }} }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ];
+
+    // Agregar filas iniciales al cargar
+    document.addEventListener('DOMContentLoaded', function() {
+        if (detallesOrden.length > 0) {
+            detallesOrden.forEach(function(detalle) {
+                crearFilaPlato(detalle);
+            });
+        } else {
+            crearFilaPlato();
+        }
+    });
+
+    // Validación al enviar el formulario
+    document.querySelector('form').addEventListener('submit', function(e) {
+        const filasPlatos = document.querySelectorAll('#platos-body tr');
+        
+        if (filasPlatos.length === 0) {
+            e.preventDefault();
+            alert('Debes agregar al menos un plato.');
+            return;
+        }
+
+        // Crear inputs ocultos con los datos de los platos
+        filasPlatos.forEach((fila) => {
+            const platoId = fila.querySelector('.plato-select').value;
+            const cantidad = fila.querySelector('.cantidad').value;
+            
+            if (platoId && cantidad) {
+                const inputPlato = document.createElement('input');
+                inputPlato.type = 'hidden';
+                inputPlato.name = 'plato_id';
+                inputPlato.value = platoId;
+                this.appendChild(inputPlato);
+
+                const inputCantidad = document.createElement('input');
+                inputCantidad.type = 'hidden';
+                inputCantidad.name = 'cantidad';
+                inputCantidad.value = cantidad;
+                this.appendChild(inputCantidad);
+            }
+        });
+    });
+</script>
+
+{% endblock %}

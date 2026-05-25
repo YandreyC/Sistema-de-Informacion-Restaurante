@@ -5,27 +5,33 @@
     <h2>👔 Empleados</h2>
     <a href="/empleados/crear/" class="btn-add btn-small">✨ Nuevo empleado</a>
 </div>
-<table>
-    <tr>
-        <th>ID</th>
-        <th>Nombre</th>
-        <th>Cargo</th>
-        <th>Teléfono</th>
-        <th>Correo</th>
-        <th>Acciones</th>
-    </tr>
-    {% for empleado in empleados %}
-    <tr>
-        <td>{{ empleado.id }}</td>
-        <td>{{ empleado.nombre }}</td>
-        <td>{{ empleado.cargo }}</td>
-        <td>{{ empleado.telefono }}</td>
-        <td>{{ empleado.correo }}</td>
-        <td class="td-actions">
-            <a href="/empleados/{{ empleado.id }}/editar/" class="btn-edit btn-small">✏️ Editar</a>
-            <a href="/empleados/{{ empleado.id }}/eliminar/" class="btn-delete btn-small">🗑️ Eliminar</a>
-        </td>
-    </tr>
-    {% endfor %}
-</table>
+<div class="table-wrapper">
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Cargo</th>
+                <th>Teléfono</th>
+                <th>Correo</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for empleado in empleados %}
+            <tr>
+                <td>{{ empleado.id }}</td>
+                <td>{{ empleado.nombre }}</td>
+                <td>{{ empleado.cargo }}</td>
+                <td>{{ empleado.telefono }}</td>
+                <td>{{ empleado.correo }}</td>
+                <td class="td-actions">
+                    <a href="/empleados/{{ empleado.id }}/editar/" class="btn-edit btn-small">✏️ Editar</a>
+                    <a href="/empleados/{{ empleado.id }}/eliminar/" class="btn-delete btn-small">🗑️ Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}

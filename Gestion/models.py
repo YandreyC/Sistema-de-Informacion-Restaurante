@@ -118,6 +118,8 @@ class Factura(models.Model):
         ('Daviplata', 'Daviplata'),
     ]
 
+    IVA = Decimal('0.19')
+
     orden = models.OneToOneField(Orden, on_delete=models.CASCADE)
     fecha_factura = models.DateTimeField(auto_now_add=True)
     subtotal = models.DecimalField(max_digits=10, decimal_places=2)
@@ -127,6 +129,12 @@ class Factura(models.Model):
 
     class Meta:
         db_table = 'Factura'
+
+    def save(self, *args, **kwargs):
+        self.subtotal = self.orden.total
+        self.impuesto = (self.subtotal * self.IVA).quantize(Decimal('0.01'))
+        self.total_factura = (self.subtotal + self.impuesto).quantize(Decimal('0.01'))
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"Factura {self.id} - Orden {self.orden.id}"
