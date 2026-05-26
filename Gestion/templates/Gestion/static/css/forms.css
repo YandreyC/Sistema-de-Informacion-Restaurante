@@ -86,3 +86,74 @@ select {
 
     gap: 1.5rem;
 }
+
+.form-container {
+    background: rgba(15, 23, 42, 0.75);
+
+    border: 1px solid rgba(148, 163, 184, 0.14);
+
+    border-radius: 26px;
+
+    padding: 2rem;
+
+    box-shadow: var(--shadow-md);
+
+    backdrop-filter: blur(16px);
+}
+
+.form-header {
+    margin-bottom: 1.5rem;
+}
+
+.form-header h2 {
+    margin: 0;
+
+    color: white;
+
+    font-size: clamp(1.4rem, 2vw, 1.8rem);
+}
+
+.dark-form {
+    background: rgba(15, 23, 42, 0.58);
+
+    border: 1px solid rgba(148, 163, 184, 0.12);
+
+    border-radius: 22px;
+
+    padding: 1.5rem;
+}
+
+.dark-form p {
+    margin: 0 0 1.1rem;
+}
+
+.dark-form p:last-of-type {
+    margin-bottom: 0;
+}
+
+.form-control {
+    margin: 0;
+
+    padding: .85rem 1rem;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: .75rem;
+
+    margin-top: 1.5rem;
+}
+
+.error {
+    display: block;
+
+    margin-top: .45rem;
+
+    color: #fecaca;
+
+    font-size: .9rem;
+}

@@ -4,9 +4,11 @@ input[type='button'],
 a.button-link {
     border: none;
 
-    border-radius: 14px;
+    border-radius: 18px;
 
     padding: 1rem 1.4rem;
+
+    min-height: 2.9rem;
 
     font-size: .95rem;
     font-weight: 700;
@@ -55,7 +57,7 @@ a.button-link {
 }
 
 .btn-edit:hover,
-..btn-delete:hover {
+.btn-delete:hover {
     transform: translateY(-3px);
 }
 
@@ -133,10 +135,24 @@ a.button-link {
     flex-wrap: wrap;
 }
 
+.action-row {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: .75rem;
+
+    margin-top: 1.5rem;
+}
+
 .create-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
+
+    gap: 1rem;
 
     margin-bottom: 2rem;
 
