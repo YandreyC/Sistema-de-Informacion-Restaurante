@@ -3,24 +3,39 @@
 {% block content %}
 
 <div class="dashboard-header">
-    <h2 class="section-title">Panel principal</h2>
+    <h2 class="section-title">
+        {% if user_role == 'Administrador' %}
+            Panel principal
+        {% elif user_role == 'Mesero' %}
+            Resumen para mesero
+        {% elif user_role == 'Cajero' %}
+            Resumen de caja
+        {% else %}
+            Bienvenido al sistema
+        {% endif %}
+    </h2>
     <p class="section-subtitle">
-        Resumen general del sistema de gestión.
+        {% if user_role == 'Administrador' %}
+            Resumen general del sistema de gestión.
+        {% elif user_role == 'Mesero' %}
+            Consulta rápida de mesas, órdenes y clientes.
+        {% elif user_role == 'Cajero' %}
+            Consulta rápida de órdenes pendientes y ventas.
+        {% else %}
+            Accede con tu usuario para ver las funciones disponibles.
+        {% endif %}
     </p>
 </div>
 
+{% if user_role == 'Administrador' %}
 <div class="card-grid dashboard-grid">
-
     <div class="card dashboard-card">
         <div class="dashboard-card-content">
             <div>
                 <span class="dashboard-label">Clientes</span>
                 <h3>{{ total_clientes }}</h3>
             </div>
-
-            <div class="dashboard-icon">
-                👥
-            </div>
+            <div class="dashboard-icon">👥</div>
         </div>
     </div>
 
@@ -30,10 +45,7 @@
                 <span class="dashboard-label">Empleados</span>
                 <h3>{{ total_empleados }}</h3>
             </div>
-
-            <div class="dashboard-icon">
-                🧑‍💼
-            </div>
+            <div class="dashboard-icon">🧑‍💼</div>
         </div>
     </div>
 
@@ -43,10 +55,7 @@
                 <span class="dashboard-label">Mesas</span>
                 <h3>{{ total_mesas }}</h3>
             </div>
-
-            <div class="dashboard-icon">
-                🪑
-            </div>
+            <div class="dashboard-icon">🪑</div>
         </div>
     </div>
 
@@ -56,10 +65,7 @@
                 <span class="dashboard-label">Platos</span>
                 <h3>{{ total_platos }}</h3>
             </div>
-
-            <div class="dashboard-icon">
-                🍽️
-            </div>
+            <div class="dashboard-icon">🍽️</div>
         </div>
     </div>
 
@@ -69,10 +75,7 @@
                 <span class="dashboard-label">Órdenes</span>
                 <h3>{{ total_ordenes }}</h3>
             </div>
-
-            <div class="dashboard-icon">
-                📋
-            </div>
+            <div class="dashboard-icon">📋</div>
         </div>
     </div>
 
@@ -82,13 +85,106 @@
                 <span class="dashboard-label">Facturas</span>
                 <h3>{{ total_facturas }}</h3>
             </div>
-
-            <div class="dashboard-icon">
-                💳
+            <div class="dashboard-icon">💳</div>
+        </div>
+    </div>
+</div>
+{% elif user_role == 'Mesero' %}
+<div class="card-grid dashboard-grid">
+    <div class="card dashboard-card">
+        <div class="dashboard-card-content">
+            <div>
+                <span class="dashboard-label">Mesas disponibles</span>
+                <h3>{{ mesas_disponibles }}</h3>
             </div>
+            <div class="dashboard-icon">🪑</div>
         </div>
     </div>
 
+    <div class="card dashboard-card">
+        <div class="dashboard-card-content">
+            <div>
+                <span class="dashboard-label">Mesas ocupadas</span>
+                <h3>{{ mesas_ocupadas }}</h3>
+            </div>
+            <div class="dashboard-icon">🚫</div>
+        </div>
+    </div>
+
+    <div class="card dashboard-card">
+        <div class="dashboard-card-content">
+            <div>
+                <span class="dashboard-label">Órdenes activas</span>
+                <h3>{{ ordenes_activas }}</h3>
+            </div>
+            <div class="dashboard-icon">📋</div>
+        </div>
+    </div>
+
+    <div class="card dashboard-card">
+        <div class="dashboard-card-content">
+            <div>
+                <span class="dashboard-label">Clientes registrados</span>
+                <h3>{{ total_clientes }}</h3>
+            </div>
+            <div class="dashboard-icon">👥</div>
+        </div>
+    </div>
 </div>
+
+<div class="card">
+    <h3>Funciones disponibles</h3>
+    <ul>
+        <li>Consultar mesas disponibles y ocupadas.</li>
+        <li>Registrar, actualizar y consultar órdenes.</li>
+        <li>Asociar órdenes a una mesa.</li>
+        <li>Visualizar el menú disponible.</li>
+        <li>Consultar información básica de clientes.</li>
+    </ul>
+</div>
+{% elif user_role == 'Cajero' %}
+<div class="card-grid dashboard-grid">
+    <div class="card dashboard-card">
+        <div class="dashboard-card-content">
+            <div>
+                <span class="dashboard-label">Órdenes pendientes</span>
+                <h3>{{ ordenes_pendientes }}</h3>
+            </div>
+            <div class="dashboard-icon">⏳</div>
+        </div>
+    </div>
+
+    <div class="card dashboard-card">
+        <div class="dashboard-card-content">
+            <div>
+                <span class="dashboard-label">Facturas emitidas</span>
+                <h3>{{ facturas_emitidas }}</h3>
+            </div>
+            <div class="dashboard-icon">💳</div>
+        </div>
+    </div>
+
+    <div class="card dashboard-card">
+        <div class="dashboard-card-content">
+            <div>
+                <span class="dashboard-label">Ventas acumuladas</span>
+                <h3>{{ total_ventas }}</h3>
+            </div>
+            <div class="dashboard-icon">💰</div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <h3>Funciones disponibles</h3>
+    <ul>
+        <li>Consultar órdenes pendientes de pago.</li>
+        <li>Generar facturas y registrar pagos.</li>
+        <li>Consultar historial de ventas.</li>
+        <li>Visualizar información básica de órdenes.</li>
+        <li>Cerrar cuentas de mesas atendidas.</li>
+    </ul>
+</div>
+{% endif %}
 
 {% endblock %}

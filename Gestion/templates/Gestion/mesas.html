@@ -3,7 +3,9 @@
 {% block content %}
 <div class="create-header">
     <h2>🪑 Mesas</h2>
-    <a href="/mesas/crear/" class="btn-add btn-small">✨ Nueva mesa</a>
+    {% if user_role == 'Administrador' %}
+        <a href="/mesas/crear/" class="btn-add btn-small">✨ Nueva mesa</a>
+    {% endif %}
 </div>
 <div class="table-wrapper">
     <table>
@@ -13,7 +15,9 @@
                 <th>Número</th>
                 <th>Capacidad</th>
                 <th>Estado</th>
-                <th>Acciones</th>
+                {% if user_role == 'Administrador' %}
+                    <th>Acciones</th>
+                {% endif %}
             </tr>
         </thead>
         <tbody>
@@ -23,10 +27,12 @@
                 <td>{{ mesa.numero_mesa }}</td>
                 <td>{{ mesa.capacidad }}</td>
                 <td>{{ mesa.estado_mesa }}</td>
+                {% if user_role == 'Administrador' %}
                 <td class="td-actions">
                     <a href="/mesas/{{ mesa.id }}/editar/" class="btn-edit btn-small">✏️ Editar</a>
                     <a href="/mesas/{{ mesa.id }}/eliminar/" class="btn-delete btn-small">🗑️ Eliminar</a>
                 </td>
+                {% endif %}
             </tr>
             {% endfor %}
         </tbody>

@@ -3,7 +3,9 @@
 {% block content %}
 <div class="create-header">
     <h2>👥 Clientes</h2>
-    <a href="/clientes/crear/" class="btn-add btn-small">✨ Nuevo cliente</a>
+    {% if user_role == 'Administrador' %}
+        <a href="/clientes/crear/" class="btn-add btn-small">✨ Nuevo cliente</a>
+    {% endif %}
 </div>
 <div class="table-wrapper">
     <table>
@@ -13,7 +15,9 @@
                 <th>Nombre</th>
                 <th>Teléfono</th>
                 <th>Correo</th>
-                <th>Acciones</th>
+                {% if user_role == 'Administrador' %}
+                    <th>Acciones</th>
+                {% endif %}
             </tr>
         </thead>
         <tbody>
@@ -23,10 +27,12 @@
                 <td>{{ cliente.nombre }}</td>
                 <td>{{ cliente.telefono }}</td>
                 <td>{{ cliente.correo }}</td>
+                {% if user_role == 'Administrador' %}
                 <td class="td-actions">
                     <a href="/clientes/{{ cliente.id }}/editar/" class="btn-edit btn-small">✏️ Editar</a>
                     <a href="/clientes/{{ cliente.id }}/eliminar/" class="btn-delete btn-small">🗑️ Eliminar</a>
                 </td>
+                {% endif %}
             </tr>
             {% endfor %}
         </tbody>

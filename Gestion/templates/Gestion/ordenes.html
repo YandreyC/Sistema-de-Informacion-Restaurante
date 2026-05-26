@@ -3,7 +3,9 @@
 {% block content %}
 <div class="create-header">
     <h2>📋 Órdenes</h2>
-    <a href="/ordenes/crear/" class="btn-add btn-small">✨ Nueva orden</a>
+    {% if user_role != 'Cajero' %}
+        <a href="/ordenes/crear/" class="btn-add btn-small">✨ Nueva orden</a>
+    {% endif %}
 </div>
 <div class="table-wrapper">
     <table>
@@ -17,7 +19,9 @@
                 <th>Platos</th>
                 <th>Estado</th>
                 <th>Total</th>
-                <th>Acciones</th>
+                {% if user_role != 'Cajero' or user_role == 'Cajero' %}
+                    <th>Acciones</th>
+                {% endif %}
             </tr>
         </thead>
         <tbody>
@@ -36,14 +40,18 @@
                 <td>{{ orden.estado_orden }}</td>
                 <td>{{ orden.total }}</td>
                 <td class="td-actions">
-                    {% if orden.estado_orden != 'Facturada' %}
-                        <a href="/ordenes/{{ orden.id }}/editar/" class="btn-edit btn-small">✏️ Editar</a>
+                    {% if user_role == 'Administrador' or user_role == 'Mesero' %}
+                        {% if orden.estado_orden != 'Facturada' %}
+                            <a href="/ordenes/{{ orden.id }}/editar/" class="btn-edit btn-small">✏️ Editar</a>
+                        {% endif %}
+                        {% if orden.estado_orden != 'Entregada' and orden.estado_orden != 'Facturada' and orden.estado_orden != 'Cancelada' %}
+                            <a href="/ordenes/{{ orden.id }}/atender/" class="btn-edit btn-small">✓ Atender</a>
+                        {% endif %}
                     {% endif %}
-                    {% if orden.estado_orden != 'Entregada' and orden.estado_orden != 'Facturada' and orden.estado_orden != 'Cancelada' %}
-                        <a href="/ordenes/{{ orden.id }}/atender/" class="btn-edit btn-small">✓ Atender</a>
-                    {% endif %}
-                    {% if orden.estado_orden == 'Entregada' %}
-                        <a href="/ordenes/{{ orden.id }}/facturar/" class="btn-edit btn-small">💳 Facturar</a>
+                    {% if user_role == 'Administrador' or user_role == 'Cajero' %}
+                        {% if orden.estado_orden == 'Entregada' %}
+                            <a href="/ordenes/{{ orden.id }}/facturar/" class="btn-edit btn-small">💳 Facturar</a>
+                        {% endif %}
                     {% endif %}
                 </td>
             </tr>
