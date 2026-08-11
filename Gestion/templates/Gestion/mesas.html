@@ -1,0 +1,41 @@
+{% extends 'gestion/base.html' %}
+
+{% block content %}
+<div class="create-header">
+    <h2>🪑 Mesas</h2>
+    {% if user_role == 'Administrador' %}
+        <a href="/mesas/crear/" class="btn-add btn-small">✨ Nueva mesa</a>
+    {% endif %}
+</div>
+<div class="table-wrapper">
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Número</th>
+                <th>Capacidad</th>
+                <th>Estado</th>
+                {% if user_role == 'Administrador' %}
+                    <th>Acciones</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for mesa in mesas %}
+            <tr>
+                <td>{{ mesa.id }}</td>
+                <td>{{ mesa.numero_mesa }}</td>
+                <td>{{ mesa.capacidad }}</td>
+                <td>{{ mesa.estado_mesa }}</td>
+                {% if user_role == 'Administrador' %}
+                <td class="td-actions">
+                    <a href="/mesas/{{ mesa.id }}/editar/" class="btn-edit btn-small">✏️ Editar</a>
+                    <a href="/mesas/{{ mesa.id }}/eliminar/" class="btn-delete btn-small">🗑️ Eliminar</a>
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

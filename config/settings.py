@@ -62,6 +62,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'Gestion.context_processors.user_role',
             ],
         },
     },
@@ -79,14 +80,16 @@ DATABASES = {
         'NAME': 'Restaurante_DB',
         'USER': 'sa',
         'PASSWORD': '123456789',
-        'HOST': r'localhost\SQLEXPRESS',  
-        'PORT': '1433', 
+        'HOST': r'localhost\SQLEXPRESS',
+        'PORT': '1433',
         'OPTIONS': {
-            'driver': 'ODBC Driver 17 for SQL Server', # Verifica la versión que tengas instalada
+            'driver': 'ODBC Driver 17 for SQL Server',
+            'extra_params': 'TrustServerCertificate=no',
         },
     }
 }
-
+DATABASES_CONNECTION_POOLING = False
+CONN_MAX_AGE = 0
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
@@ -123,3 +126,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [
+    BASE_DIR / 'Gestion' / 'templates' / 'Gestion' / 'static',
+]
+
+# Login redirect URL
+LOGIN_URL = 'login_admin'

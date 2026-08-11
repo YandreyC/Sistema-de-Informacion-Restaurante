@@ -1,0 +1,30 @@
+{% extends 'gestion/base.html' %}
+
+{% block content %}
+<div class="create-header">
+    <h2>👤 Usuarios y roles</h2>
+    <a href="/usuarios/crear/" class="btn-add btn-small">✨ Nuevo usuario</a>
+</div>
+<div class="table-wrapper">
+    <table>
+        <thead>
+            <tr>
+                <th>Usuario</th>
+                <th>Nombre</th>
+                <th>Correo</th>
+                <th>Rol</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in usuarios %}
+            <tr>
+                <td>{{ item.user.username }}</td>
+                <td>{{ item.user.first_name }} {{ item.user.last_name }}</td>
+                <td>{{ item.user.email }}</td>
+                <td>{{ item.role }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

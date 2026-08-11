@@ -1,0 +1,42 @@
+{% extends 'gestion/auth_base.html' %}
+
+{% block title %}Iniciar Sesión · Pasta La Vista{% endblock %}
+{% block heading %}Bienvenido de nuevo{% endblock %}
+{% block subheading %}Accede al panel administrativo para gestionar clientes, mesas, platos y pedidos.{% endblock %}
+
+{% block content %}
+    {% if messages %}
+        <div class="alert-grid">
+            {% for message in messages %}
+                <div class="alert-box alert-box-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <form method="POST" class="auth-form">
+        {% csrf_token %}
+
+        <div class="form-field">
+            <label for="id_username">Usuario</label>
+            {{ form.username }}
+            {% if form.username.errors %}
+                <span class="field-error">{{ form.username.errors.0 }}</span>
+            {% endif %}
+        </div>
+
+        <div class="form-field">
+            <label for="id_password">Contraseña</label>
+            {{ form.password }}
+            {% if form.password.errors %}
+                <span class="field-error">{{ form.password.errors.0 }}</span>
+            {% endif %}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+
+        <div class="auth-links">
+            <a href="{% url 'registro_admin' %}">Crear cuenta</a>
+            <a href="{% url 'recuperar_contraseña' %}">Olvidé mi contraseña</a>
+        </div>
+    </form>
+{% endblock %}

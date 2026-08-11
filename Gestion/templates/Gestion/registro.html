@@ -1,0 +1,83 @@
+{% extends 'gestion/auth_base.html' %}
+
+{% block title %}Registro · Pasta La Vista{% endblock %}
+{% block heading %}Crea tu cuenta administrativa{% endblock %}
+{% block subheading %}Regístrate para comenzar a gestionar clientes, mesas y pedidos desde un panel moderno.{% endblock %}
+
+{% block content %}
+    {% if messages %}
+        <div class="alert-grid">
+            {% for message in messages %}
+                <div class="alert-box alert-box-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <form method="POST" class="auth-form">
+        {% csrf_token %}
+
+        <div class="form-field">
+            <label for="id_username">Usuario</label>
+            {{ form.username }}
+            {% if form.username.errors %}
+                <span class="field-error">{{ form.username.errors.0 }}</span>
+            {% endif %}
+        </div>
+
+        <div class="form-field">
+            <label for="id_email">Correo Electrónico</label>
+            {{ form.email }}
+            {% if form.email.errors %}
+                <span class="field-error">{{ form.email.errors.0 }}</span>
+            {% endif %}
+        </div>
+
+        <div class="form-field">
+            <label for="id_first_name">Nombre</label>
+            {{ form.first_name }}
+            {% if form.first_name.errors %}
+                <span class="field-error">{{ form.first_name.errors.0 }}</span>
+            {% endif %}
+        </div>
+
+        <div class="form-field">
+            <label for="id_last_name">Apellido</label>
+            {{ form.last_name }}
+            {% if form.last_name.errors %}
+                <span class="field-error">{{ form.last_name.errors.0 }}</span>
+            {% endif %}
+        </div>
+
+        <div class="form-field">
+            <label for="id_telefono">Teléfono (opcional)</label>
+            {{ form.telefono }}
+            {% if form.telefono.errors %}
+                <span class="field-error">{{ form.telefono.errors.0 }}</span>
+            {% endif %}
+        </div>
+
+        <div class="form-field">
+            <label for="id_password1">Contraseña</label>
+            {{ form.password1 }}
+            {% if form.password1.errors %}
+                <span class="field-error">{{ form.password1.errors.0 }}</span>
+            {% endif %}
+            <p class="form-help">La contraseña debe tener al menos 8 caracteres y no ser completamente numérica.</p>
+        </div>
+
+        <div class="form-field">
+            <label for="id_password2">Confirmar contraseña</label>
+            {{ form.password2 }}
+            {% if form.password2.errors %}
+                <span class="field-error">{{ form.password2.errors.0 }}</span>
+            {% endif %}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Crear Cuenta</button>
+
+        <div class="auth-links">
+            <a href="{% url 'login_admin' %}">Ya tengo cuenta</a>
+            <a href="{% url 'recuperar_contraseña' %}">Recuperar contraseña</a>
+        </div>
+    </form>
+{% endblock %}

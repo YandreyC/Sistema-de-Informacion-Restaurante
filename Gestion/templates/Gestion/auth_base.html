@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Restaurante Pasta La Vista{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/forms.css' %}">
+    <link rel="stylesheet" href="{% static 'css/buttons-alerts.css' %}">
+    <link rel="stylesheet" href="{% static 'css/auth.css' %}">
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+</head>
+<body class="auth-page">
+    <main class="auth-card">
+        <header class="auth-brand">
+            <h1>{% block heading %}Pasta La Vista{% endblock %}</h1>
+            <p>{% block subheading %}Gestiona tu restaurante con una interfaz clara y profesional.{% endblock %}</p>
+        </header>
+
+        {% block content %}{% endblock %}
+
+        <footer class="auth-footer">
+            <p>Restaurante Pasta La Vista · Interfaz moderna</p>
+        </footer>
+    </main>
+</body>
+</html>

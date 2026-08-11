@@ -1,0 +1,15 @@
+{% extends 'gestion/auth_base.html' %}
+
+{% block title %}Correo Enviado · Pasta La Vista{% endblock %}
+{% block heading %}Correo enviado con éxito{% endblock %}
+{% block subheading %}Revisa tu correo para continuar con el proceso de recuperación.{% endblock %}
+
+{% block content %}
+    <div class="alert-box alert-box-warning">
+        <strong>Nota:</strong> El enlace de recuperación es válido por 24 horas. Revisa también tu carpeta de spam si no encuentras el correo.
+    </div>
+
+    <div class="auth-links">
+        <a href="{% url 'login_admin' %}">Volver al login</a>
+    </div>
+{% endblock %}

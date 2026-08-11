@@ -1,0 +1,51 @@
+{% extends 'gestion/auth_base.html' %}
+
+{% block title %}Cambiar Contraseña · Pasta La Vista{% endblock %}
+{% block heading %}Cambiar contraseña{% endblock %}
+{% block subheading %}Actualiza tu contraseña para proteger tu acceso administrativo.{% endblock %}
+
+{% block content %}
+    {% if messages %}
+        <div class="alert-grid">
+            {% for message in messages %}
+                <div class="alert-box alert-box-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="alert-box alert-box-warning">
+        Correo verificado: <strong>{{ email }}</strong>
+    </div>
+
+    <form method="POST" class="auth-form">
+        {% csrf_token %}
+
+        <div class="form-field">
+            <label for="id_nueva_contraseña">Nueva contraseña</label>
+            {{ form.nueva_contraseña }}
+            {% if form.nueva_contraseña.errors %}
+                <span class="field-error">{{ form.nueva_contraseña.errors.0 }}</span>
+            {% endif %}
+        </div>
+
+        <div class="form-field">
+            <label for="id_confirmar_contraseña">Confirmar contraseña</label>
+            {{ form.confirmar_contraseña }}
+            {% if form.confirmar_contraseña.errors %}
+                <span class="field-error">{{ form.confirmar_contraseña.errors.0 }}</span>
+            {% endif %}
+        </div>
+
+        {% if form.non_field_errors %}
+            <div class="alert-box alert-box-error">
+                {{ form.non_field_errors.0 }}
+            </div>
+        {% endif %}
+
+        <button type="submit" class="btn btn-primary">Cambiar contraseña</button>
+
+        <div class="auth-links">
+            <a href="{% url 'login_admin' %}">Volver al login</a>
+        </div>
+    </form>
+{% endblock %}
